@@ -21,37 +21,37 @@ public class RssController {
     }
 
     @GetMapping("/")
-    public String mainPage(Model model){
+    public String mainPage(Model model) {
         return "index";
     }
 
     @GetMapping(value = "/add")
-    public String addNewRssFeed(Model m){
+    public String addNewRssFeed(Model m) {
         m.addAttribute("newFeed", NewFeed.builder().build());
         return "add";
     }
 
     @PostMapping(value = "/add")
-    public RedirectView addNewRssFeed(@ModelAttribute("newFeed") NewFeed newFeed, RedirectAttributes redirectAttributes){
+    public RedirectView addNewRssFeed(@ModelAttribute("newFeed") NewFeed newFeed, RedirectAttributes redirectAttributes) {
         final RedirectView redirectView = new RedirectView("/add", true);
         final NewFeed savedFeed = service.addFeed(newFeed);
         redirectAttributes.addFlashAttribute("savedFeed", savedFeed);
-        if(null != savedFeed){
+        if (null != savedFeed) {
             redirectAttributes.addFlashAttribute("newFeedAdded", true);
-        } else{
+        } else {
             redirectAttributes.addFlashAttribute("malformedUrl", true);
         }
         return redirectView;
     }
 
     @GetMapping(value = "/view")
-    public String viewAllFeeds(Model model){
+    public String viewAllFeeds(Model model) {
         model.addAttribute("feeds", service.getAvailableFeeds());
         return "view-feeds";
     }
 
     @GetMapping(value = "/view/{feedId}")
-    public String viewAllFeedItem(@PathVariable Long feedId, Model model){
+    public String viewAllFeedItem(@PathVariable Long feedId, Model model) {
         model.addAttribute("feedInfo", FeedViewResponse.fromFeed(service.getFeedById(feedId)));
         model.addAttribute("feedItems", service.getSpecificFeedItems(feedId));
         return "view-single";

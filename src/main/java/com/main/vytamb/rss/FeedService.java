@@ -43,24 +43,25 @@ public class FeedService {
         }
     }
 
-    public List<Feed> getAvailableFeeds(){
+    public List<Feed> getAvailableFeeds() {
         return feedRepo.findAll();
     }
 
-    public Feed getFeedById(Long feedId){
+    public Feed getFeedById(Long feedId) {
         return feedRepo.findById(feedId).orElse(null);
     }
-    public List<FeedItem> getSpecificFeedItems(Long feedId){
+
+    public List<FeedItem> getSpecificFeedItems(Long feedId) {
         return feedItemRepo.findAllByFeedId(feedId).stream()
                 .sorted(Comparator.comparing(FeedItem::getPublished))
                 .limit(recentArticleAmount)
                 .collect(Collectors.toList());
     }
 
-    private void saveFeed(NewFeed newFeed){
+    private void saveFeed(NewFeed newFeed) {
         final List<FeedItem> feedItemList = new ArrayList<>();
         final SyndFeed parsedFeed = parseFeed(validateUrl(newFeed.getUrl()));
-        if(parsedFeed != null){
+        if (parsedFeed != null) {
             final Feed savedFeed = feedRepo.save(fromNewFeed(newFeed, parsedFeed.getTitle()));
             parsedFeed.getEntries().forEach(o -> {
                         if (o instanceof SyndEntry) {
@@ -72,7 +73,7 @@ public class FeedService {
         }
     }
 
-    private static FeedItem fromEntry(Feed feed, Object entry){
+    private static FeedItem fromEntry(Feed feed, Object entry) {
         final FeedItem item = new FeedItem();
         item.setLink(((SyndEntry) entry).getLink());
         item.setDescription(((SyndEntry) entry).getDescription().getValue().trim());
@@ -83,7 +84,7 @@ public class FeedService {
         return item;
     }
 
-    private static Feed fromNewFeed(NewFeed newFeed, String title){
+    private static Feed fromNewFeed(NewFeed newFeed, String title) {
         final Feed feed = new Feed();
         feed.setName(newFeed.getName());
         feed.setUrl(newFeed.getUrl());
@@ -91,6 +92,7 @@ public class FeedService {
         feed.setCreated(LocalDateTime.now());
         return feed;
     }
+
     private URL validateUrl(String url) {
         try {
             return new URL(url);
@@ -103,8 +105,8 @@ public class FeedService {
         try {
             return new SyndFeedInput().build(
                     DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder()
-                    .parse(url.openConnection().getInputStream())
+                            .newDocumentBuilder()
+                            .parse(url.openConnection().getInputStream())
             );
         } catch (MalformedURLException urlException) {
             return null;
