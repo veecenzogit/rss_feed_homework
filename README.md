@@ -13,6 +13,7 @@ Viewing Saved XML feed
 ## Running application
 ### Run using Intellij IDEA
 > If run on Intellij IDEA Annotation Processors has to be enabled for compiler to work with Lombok
+> Launch application via gradle panel by executing bootRun
 
 ### Run using command line (make sure JAVA_HOME var is set)
 ```PROJECT_DIR./gradlew bootRun```
