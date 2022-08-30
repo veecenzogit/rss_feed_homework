@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
-group 'org.vytamb'
+group 'com.main.vytamb'
 version '1.0-SNAPSHOT'
 
 repositories {
