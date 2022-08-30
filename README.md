@@ -5,10 +5,10 @@ Adding new XML feed
 Viewing Saved XML feed
 
 ## Build using
-**Java 8 (corretto)**
-**SpringBoot**
-**H2 database**
-**JSP templates**
+**Java 8 (corretto)**;
+**SpringBoot**;
+**H2 database**;
+**JSP templates**;
 
 ## Running application
 ### Run using Intellij IDEA
